@@ -4,16 +4,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RoomBookingService.entity.Booking;
 import com.example.RoomBookingService.DTO.BookingDTO;
+import com.example.RoomBookingService.entity.Booking;
 import com.example.RoomBookingService.service.BookingService;
 
 @RestController
@@ -25,17 +23,6 @@ public class BookingController {
 
   public BookingController(BookingService bookingService) {
     this.bookingService = bookingService;
-  }
-
-  // Error response class
-  public static class ErrorResponse {
-    public String error;
-    public String message;
-    
-    public ErrorResponse(String error, String message) {
-      this.error = error;
-      this.message = message;
-    }
   }
 
   @PostMapping("/bookings")
