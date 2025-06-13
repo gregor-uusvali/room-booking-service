@@ -23,26 +23,32 @@ public class BookingService {
   }
 
   public BookingDTO createBooking(Booking booking) {
-    if(booking.getCheckInDate().isBefore(LocalDate.now())) {
+    if (booking.getCheckInDate().isBefore(LocalDate.now())) {
       throw new IllegalArgumentException("Check-in date cannot be in the past");
     }
-    if(booking.getCheckOutDate().isBefore(booking.getCheckInDate())) {
+    if (booking.getCheckOutDate().isBefore(booking.getCheckInDate())) {
       throw new IllegalArgumentException("Check-out date cannot be before check-in date");
     }
-    if(booking.getCheckOutDate().isAfter(booking.getCheckInDate().plusDays(30))) {
+    if (booking.getCheckOutDate().isAfter(booking.getCheckInDate().plusDays(30))) {
       throw new IllegalArgumentException("Check-out date cannot be more than 30 days after check-in date");
     }
-    if(bookingRepository.findByCheckInDateBetween(booking.getCheckInDate(), booking.getCheckOutDate()).size() >= 10) {
-      throw new IllegalArgumentException("Room is already booked for the selected dates");
+    List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
+        booking.getRoomId(), 
+        booking.getCheckInDate(), 
+        booking.getCheckOutDate()
+    );
+
+    if (!overlappingBookings.isEmpty()) {
+        throw new IllegalArgumentException("Room is already booked for the selected dates");
     }
     Booking bookingEntity = bookingRepository.save(booking);
     return BookingDTO.builder()
-      .room(roomRepository.findById(bookingEntity.getRoomId()).orElse(null))
-      .userId(bookingEntity.getUserId())
-      .bookingDate(bookingEntity.getBookingDate())
-      .checkInDate(bookingEntity.getCheckInDate())
-      .checkOutDate(bookingEntity.getCheckOutDate())
-      .build();
+        .room(roomRepository.findById(bookingEntity.getRoomId()).orElse(null))
+        .userId(bookingEntity.getUserId())
+        .bookingDate(bookingEntity.getBookingDate())
+        .checkInDate(bookingEntity.getCheckInDate())
+        .checkOutDate(bookingEntity.getCheckOutDate())
+        .build();
   }
 
   public List<Booking> getMonthsBookings(String month) {
