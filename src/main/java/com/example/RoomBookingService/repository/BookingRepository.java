@@ -10,5 +10,5 @@ import com.example.RoomBookingService.entity.Booking;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-  List<Booking> findByBookingDateBetween(LocalDate startDate, LocalDate endDate);
+  List<Booking> findByCheckInDateBetween(LocalDate startDate, LocalDate endDate);
 }

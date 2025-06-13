@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +20,22 @@ import com.example.RoomBookingService.service.BookingService;
 public class BookingController {
 
   private final BookingService bookingService;
-  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-  private final String startDate = LocalDate.now().withDayOfMonth(1).format(formatter);
-  private final String endDate = LocalDate.now().plusMonths(1).minusDays(1).format(formatter);
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+  private final String currentMonth = LocalDate.now().withDayOfMonth(1).format(formatter);
 
   public BookingController(BookingService bookingService) {
     this.bookingService = bookingService;
+  }
+
+  // Error response class
+  public static class ErrorResponse {
+    public String error;
+    public String message;
+    
+    public ErrorResponse(String error, String message) {
+      this.error = error;
+      this.message = message;
+    }
   }
 
   @PostMapping("/bookings")
@@ -34,7 +46,7 @@ public class BookingController {
   }
 
   @GetMapping("/bookings")
-  public List<Booking> getBookings(@RequestParam(required = false) String start, @RequestParam(required = false) String end) {
-    return bookingService.getMonthsBookings(start != null ? start : startDate, end != null ? end : endDate);
+  public List<Booking> getBookings(@RequestParam(required = false) String month) {
+    return bookingService.getMonthsBookings(month != null ? month : currentMonth);
   }
 }
