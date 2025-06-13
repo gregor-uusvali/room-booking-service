@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
         }
     }
 
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleRoomNotFoundException(RoomNotFoundException e) {
+        ErrorResponse error = new ErrorResponse("ROOM_NOT_FOUND", e.getMessage(), 404);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
         ErrorResponse error = new ErrorResponse("VALIDATION_ERROR", e.getMessage(), 400);

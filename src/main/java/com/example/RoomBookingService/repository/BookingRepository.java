@@ -20,4 +20,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
       @Param("roomId") Long roomId,
       @Param("checkIn") LocalDate checkIn,
       @Param("checkOut") LocalDate checkOut);
+
+  @Query("SELECT b.checkInDate FROM Booking b WHERE b.roomId = :roomId AND " +
+      "b.checkInDate < :checkOut AND b.checkOutDate > :checkIn")
+  List<LocalDate> findAvailableDates(
+      @Param("roomId") Long roomId,
+      @Param("checkIn") LocalDate checkIn);
 }

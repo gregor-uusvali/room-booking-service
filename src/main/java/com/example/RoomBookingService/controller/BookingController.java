@@ -1,7 +1,6 @@
 package com.example.RoomBookingService.controller;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,22 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.RoomBookingService.DTO.BookingDTO;
 import com.example.RoomBookingService.entity.Booking;
 import com.example.RoomBookingService.service.BookingService;
+import com.example.RoomBookingService.transformer.DateTransformer;
 
 @RestController
 public class BookingController {
 
   private final BookingService bookingService;
-  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-  private final String currentMonth = LocalDate.now().withDayOfMonth(1).format(formatter);
+  private final String currentMonth;
 
-  public BookingController(BookingService bookingService) {
+  public BookingController(BookingService bookingService, DateTransformer dateTransformer) {
     this.bookingService = bookingService;
+    this.currentMonth = dateTransformer.transformLocalDateToString(LocalDate.now().withDayOfMonth(1), "yyyy-MM");
   }
 
   @PostMapping("/bookings")
   public BookingDTO createBooking(@RequestBody Booking booking) {
-    System.out.println("Creating booking");
-    System.out.println(booking);
     return bookingService.createBooking(booking);
   }
 
