@@ -46,7 +46,6 @@ public class DateTransformer {
 
   private String normalizeMonthString(String month) {
     String[] parts = month.split("-");
-    System.out.println(month);
     if (parts.length != 2) {
       throw new IllegalArgumentException("Invalid month format. Expected 'yyyy-M' or 'yyyy-MM'");
     }
