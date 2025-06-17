@@ -25,4 +25,20 @@ public class Room {
 
   @Column(name = "room_price")
   private Double roomPrice;
+
+  // @Column(name = "room_type")
+  // private String roomType;
+
+  // @Column(name = "room_capacity")
+  // private Integer roomCapacity;
+
+  // @Column(name = "room_description")
+  // private String roomDescription;
+
+  // @Column(name = "room_status")
+  // private String roomStatus;
+
+  // @Column(name = "room_image")
+  // private String roomImage;
+  
 }
