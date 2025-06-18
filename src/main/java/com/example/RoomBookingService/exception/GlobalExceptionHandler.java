@@ -2,6 +2,7 @@ package com.example.RoomBookingService.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -42,5 +43,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(Exception e) {
         ErrorResponse error = new ErrorResponse("INTERNAL_ERROR", "An unexpected error occurred", 500);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException e) {
+        ErrorResponse error = new ErrorResponse("BAD_CREDENTIALS", "Invalid credentials", 401);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 } 

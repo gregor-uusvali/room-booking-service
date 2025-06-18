@@ -32,7 +32,6 @@ public class User {
   @Column(name = "enabled")
   private Boolean enabled;
 
-  @Column(name = "type")
-  private Integer type;
-  
+  @Column(name = "role")
+  private String role;
 }

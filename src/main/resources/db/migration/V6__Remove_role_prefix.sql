@@ -1,0 +1,1 @@
+UPDATE users SET role = REPLACE(role, 'ROLE_', '') WHERE role LIKE 'ROLE_%'; 
